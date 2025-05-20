@@ -6,7 +6,7 @@ const globalForPrisma = global as unknown as {
 };
 
 const db =
-  globalForPrisma.prisma || new PrismaClient().$extends(withAccelerate());
+  globalForPrisma.prisma || new PrismaClient();
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;
 

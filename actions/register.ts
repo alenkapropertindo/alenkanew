@@ -2,11 +2,13 @@
 
 import * as z from "zod";
 import bcrypt from "bcryptjs";
+import { v4 as uuidv4 } from "uuid";
 
 
 import { RegisterSchema } from "@/schemas";
 import { getAccountByEmail } from "@/data/account";
 import db from "@/lib/db";
+// import {db} from "@/lib/db";
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(values);
@@ -24,14 +26,17 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     return { error: "Email sudah digunakan!" };
   }
 
-  // await db.account.create({
-  //   data: {
-  //     nama,
-  //     whatsup,
-  //     email,
-  //     password: hashedPassword,
-  //   },
-  // });
+  await db.account.create({
+    data: {
+      nama:nama,
+      whatsup:whatsup,
+      email:email,
+      password: hashedPassword,
+      type:"email",
+      provider:"email",
+      providerAccountId:uuidv4()
+    },
+  });
 
-  return { success:validatedFields.data };
+  return { success:"berhasil" };
 };

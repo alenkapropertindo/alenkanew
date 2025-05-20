@@ -25,6 +25,7 @@ import { FormSuccess } from "../form-success";
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
+  // const [isLoading, setIsLoading] = useState(false);
   const [isPending] = useTransition();
   const router = useRouter();
 
@@ -34,18 +35,22 @@ export const RegisterForm = () => {
       email: "",
       password: "",
       nama: "",
+      whatsup: "",
     },
   });
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
     setError("");
     setSuccess("");
+    // setIsLoading(true)
 
     startTransition(() => {
       register(values).then((data) => {
         setError(data.error);
-        setSuccess("");
+        setSuccess(data.success);
+        // console.log(data.success)
         router.push("/auth/login");
+        // setIsLoading(false)
       });
     });
   };
@@ -105,6 +110,7 @@ export const RegisterForm = () => {
                       {...field}
                       disabled={isPending}
                       placeholder="082312***"
+                      type="phone"
                     />
                   </FormControl>
                   <FormMessage />
@@ -133,7 +139,7 @@ export const RegisterForm = () => {
           <FormError message={error} />
           <FormSuccess message={success} />
           <Button disabled={isPending} type="submit" className="w-full">
-            Buat akun
+            {isPending?"Loading":"Buat akun"}
           </Button>
         </form>
       </Form>
