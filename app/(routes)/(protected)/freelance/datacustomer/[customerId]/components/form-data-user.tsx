@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { ChevronLeftCircle } from "lucide-react";
-import { Customer } from "@prisma/client";
 import { useParams, useRouter } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
@@ -25,6 +24,7 @@ import { Heading } from "@/components/ui/heading";
 import { TambahDataSchema } from "@/schemas";
 import { FormError } from "@/app/components/form-error";
 import { FormSuccess } from "@/app/components/form-success";
+import { Customer } from "@prisma/client";
 
 type DataFormValues = z.infer<typeof TambahDataSchema>;
 
@@ -82,7 +82,7 @@ export const FormData: React.FC<DataFormProps> = ({ initialData }) => {
       }
 
       router.push(`/freelance/datacustomer`);
-      toast.success(toastMessage);      
+      toast.success(toastMessage);
       router.refresh();
     } catch (error: any) {
       toast.error("Terjadi kesalahan!");
