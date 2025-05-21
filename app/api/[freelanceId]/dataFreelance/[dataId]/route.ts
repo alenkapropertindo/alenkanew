@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import  db  from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function DELETE(
@@ -12,7 +12,7 @@ export async function DELETE(
     //   },
     // });
 
-    const hapusDataUser = await db.dataUser.delete({
+    const hapusDataUser = await db.customer.delete({
       where: {
         id: params.dataId,
       },
@@ -32,7 +32,7 @@ export async function PATCH(
   try {
     const values = await req.json();
 
-    const updateDataUser = await db.dataUser.update({
+    const updateDataUser = await db.customer.update({
       where: {
         id: params.dataId,
       },

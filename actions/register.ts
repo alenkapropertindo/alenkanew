@@ -37,6 +37,5 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
       providerAccountId:uuidv4()
     },
   });
-
   return { success:"berhasil" };
 };

@@ -50,7 +50,7 @@
 
 
 import { NextResponse } from "next/server";
-import { NextApiRequest, NextApiResponse } from "next";
+// import { NextApiRequest, NextApiResponse } from "next";
 
 import NextAuth, { NextAuthRequest } from "next-auth";
 import authConfig from "@/auth.config";
