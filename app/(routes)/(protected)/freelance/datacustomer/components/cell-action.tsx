@@ -14,10 +14,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { AlertModal } from "@/components/modals/alert-modal";
 
 import { DataUserColumn } from "./columns";
-import { DataUser } from "@prisma/client";
+import { AlertModal } from "./modals/alert-modal";
 
 interface CellActionProps {
   data: DataUserColumn;
@@ -25,14 +24,14 @@ interface CellActionProps {
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter();
-  const params = useParams();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const onConfirm = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/datauser/${data.id}`);
+      await axios.delete(`/api/datacustomer/${data.id}`);
+
       toast.success("Data user berhasil dihapus.");
       router.refresh();
     } catch (error) {
@@ -62,7 +61,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
           <DropdownMenuItem
-            onClick={() => router.push(`/affiliate/datauser/${data.id}`)}
+            onClick={() => router.push(`/freelance/datacustomer/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> Edit
           </DropdownMenuItem>

@@ -10,15 +10,21 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { Heading } from "@/components/ui/heading";
 import { Overview } from "@/app/components/overview";
-import { getGraphDataAdmin } from "@/actions/get-graph-data";
+import { getTotalKomisiTerbayar } from "@/actions/get-total-komisi";
+import { getGraphData } from "@/actions/get-graph-data";
+
+const formatter = new Intl.NumberFormat("id-ID", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
 
 const DashboardPage = async () => {
   const totalData = await getTotalData();
   const totalFolowup = await getFolowup();
   const totalPemberkasan = await getPemberkasan();
   const totalAkad = await getAkad();
-  const graphData = await getGraphDataAdmin();
-
+  const totalKomisiTerbayar = await getTotalKomisiTerbayar();
+  const graphData = await getGraphData();
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
@@ -35,7 +41,10 @@ const DashboardPage = async () => {
             <CardContent>
               <Badge className=" bg-green-500">
                 <div className="lg:text-xl text-lg font-bold">
-                  Rp. 20.000.000
+                  Rp.
+                  {totalAkad > 0
+                    ? formatter.format(totalAkad * 1_000_000)
+                    : "0,00"}
                 </div>
               </Badge>
             </CardContent>
@@ -50,12 +59,15 @@ const DashboardPage = async () => {
             <CardContent>
               <Badge className=" bg-orange-500">
                 <div className="lg:text-xl text-lg font-bold">
-                  Rp. 10.000.000
+                  Rp.{" "}
+                  {formatter.format(
+                    (totalAkad - totalKomisiTerbayar) * 1_000_000
+                  )}
                 </div>
               </Badge>
             </CardContent>
           </Card>
-          <Link href={"/affiliate/datauser/akad"}>
+          <Link href={"/freelance/datauser/akad"}>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
@@ -68,7 +80,7 @@ const DashboardPage = async () => {
               </CardContent>
             </Card>
           </Link>
-          <Link href={"/affiliate/datauser"}>
+          <Link href={"/freelance/datauser"}>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">

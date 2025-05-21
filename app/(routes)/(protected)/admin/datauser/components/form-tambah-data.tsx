@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
-import { tambahData } from "@/actions/datauser";
+import { tambahData } from "@/actions/data-customer";
 import { TambahDataSchema } from "@/schemas";
 import { FormSuccess } from "@/components/form-success";
 import { FormError } from "@/components/form-error";

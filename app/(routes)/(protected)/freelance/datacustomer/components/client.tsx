@@ -25,7 +25,7 @@ export const DataUserClient: React.FC<DataUserClientProps> = ({ data }) => {
             description="Kelola data user disini"
           />
           {/* <Button onClick={() => router.push(`/affiliate/tambahdata`)}> */}
-          <Button onClick={() => router.push(`/affiliate/datauser/new`)}>
+          <Button onClick={() => router.push(`/freelance/datacustomer/new`)}>
             <Plus className="mr-2 h-4 w-4" /> Tambah Data
           </Button>
         </div>

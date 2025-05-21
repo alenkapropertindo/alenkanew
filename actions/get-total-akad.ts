@@ -1,20 +1,20 @@
-import { db } from "@/lib/db";
+import db from "@/lib/db";
 import { currentUser } from "@/lib/auth";
 
 export const getAkad = async () => {
-  const user = await currentUser();
-  const totalAkad = await db.dataUser.count({
+  const freelance = await currentUser();
+  const totalAkad = await db.customer.count({
     where: {
-      affiliateId: user.id,
-      status: "AKAD",
+      freelanceId: freelance.id,
+      status: "SUCCESS",
     },
   });
   return totalAkad;
 };
 export const getAkadAdmin = async () => {
-  const totalAkad = await db.dataUser.count({
+  const totalAkad = await db.customer.count({
     where: {
-      status: "AKAD",
+      status: "SUCCESS",
     },
   });
   return totalAkad;

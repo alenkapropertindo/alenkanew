@@ -5,8 +5,10 @@ import axios from "axios";
 import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Trash, ChevronLeftCircle, Ghost } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
+import { ChevronLeftCircle } from "lucide-react";
+import { Customer } from "@prisma/client";
+import { useParams, useRouter } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -20,59 +22,74 @@ import {
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
-import { tambahData } from "@/actions/datauser";
 import { TambahDataSchema } from "@/schemas";
-import { FormSuccess } from "@/components/form-success";
-import { FormError } from "@/components/form-error";
+import { FormError } from "@/app/components/form-error";
+import { FormSuccess } from "@/app/components/form-success";
 
-export const FormTambahData = () => {
-  const router = useRouter();
+type DataFormValues = z.infer<typeof TambahDataSchema>;
 
+interface DataFormProps {
+  initialData: Customer | null;
+}
+
+export const FormData: React.FC<DataFormProps> = ({ initialData }) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
+  const params = useParams();
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
+
+  const title = initialData ? "Edit data" : "Tambah data";
+  const description = initialData ? "Edit data user." : "tambahkan data user";
+  const toastMessage = initialData
+    ? "Data berhasil diubah."
+    : "Data berhasil ditambahkan.";
+  const action = initialData ? "Simpan perubahan" : "Tambahkan";
+
   const form = useForm<z.infer<typeof TambahDataSchema>>({
     resolver: zodResolver(TambahDataSchema),
-    defaultValues: {
+    defaultValues: initialData || {
       nama: "",
       email: "",
       whatsup: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof TambahDataSchema>) => {
-    setError("");
-    setSuccess("");
+  // const onSubmit = (values: z.infer<typeof TambahDataSchema>) => {
+  //   setError("");
+  //   setSuccess("");
 
-    startTransition(() => {
-      tambahData(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-        router.push(`/affiliate/datauser`);
-        router.refresh();
-      });
-    });
-  };
-
-  // const onSubmit = async (data: DataFormValues) => {
-  //   try {
-  //     setLoading(true);
-  //     if (initialData) {
-  //       await axios.patch(`/api/datauser/${params.dataId}`, data);
-  //     } else {
-  //       await axios.post(`/api/datauser`, data);
-  //     }
-
-  //     router.push(`/affiliate/datauser`);
-  //     router.refresh();
-  //     toast.success(toastMessage);
-  //   } catch (error: any) {
-  //     toast.error("Terjadi kesalahan!");
-  //   } finally {
-  //     setLoading(false);
-  //   }
+  //   startTransition(() => {
+  //     tambahData(values).then((data) => {
+  //       setError(data.error);
+  //       setSuccess(data.success);
+  //       router.push(`/affiliate/datauser`);
+  //       router.refresh();
+  //     });
+  //   });
   // };
+
+  const onSubmit = async (data: DataFormValues) => {
+    try {
+      setLoading(true);
+      if (initialData) {
+        await axios.patch(`/api/datacustomer/${params.customerId}`, data);
+      } else {
+        await axios.post(`/api/datacustomer`, data);
+      }
+
+      router.push(`/freelance/datacustomer`);
+      toast.success(toastMessage);      
+      router.refresh();
+    } catch (error: any) {
+      toast.error("Terjadi kesalahan!");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // const onDelete = async () => {
   //   try {
@@ -100,10 +117,10 @@ export const FormTambahData = () => {
       /> */}
 
       <div className="flex items-center justify-between">
-        <Heading title="Tambah Data" description="Form tambah data" />
+        <Heading title={title} description={description} />
       </div>
       <Separator />
-      <Button onClick={() => router.push(`/affiliate/datauser`)}>
+      <Button onClick={() => router.push(`/feelance/datacustomer`)}>
         <ChevronLeftCircle className="h-4 w-4 mr-2" /> Kembali
       </Button>
       <div className=" max-w-xl bg-slate-100 mt-4 mx-auto flex md:items-center md:justify-center h-full p-6">
@@ -162,8 +179,8 @@ export const FormTambahData = () => {
             />
             <FormError message={error} />
             <FormSuccess message={success} />
-            <Button type="submit" className="ml-auto mr-4">
-              Tambahkan
+            <Button disabled={isPending} className="ml-auto mr-4" type="submit">
+              {action}
             </Button>
           </form>
         </Form>

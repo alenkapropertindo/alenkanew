@@ -1,24 +1,25 @@
-import { DataUserColumn } from "./components/columns";
-import { DataUserClient } from "./components/client";
-import { db } from "@/lib/db";
+import db from "@/lib/db";
 import { currentUser } from "@/lib/auth";
+import { DataUserColumn } from "../components/columns";
+import { DataUserClient } from "../components/client";
 
 const DataUserPage = async () => {
   const user = await currentUser();
-  const datausers = await db.dataUser.findMany({
+  const customers = await db.customer.findMany({
     where: {
-      affiliateId: user.id,
+      freelanceId: user.id,
+      status: "ONPROCESS",
     },
     orderBy: {
       createdAt: "desc",
     },
   });
 
-  if (!datausers) {
+  if (!customers) {
     return { error: "data tidak ditemukan" };
   }
 
-  const data: DataUserColumn[] = datausers.map((item) => ({
+  const data: DataUserColumn[] = customers.map((item) => ({
     id: item.id,
     nama: item.nama,
     whatsup: item.whatsup,

@@ -1,5 +1,5 @@
 import { currentUser } from "@/lib/auth";
-import { db } from "@/lib/db";
+import db  from "@/lib/db";
 
 interface GraphData {
   name: string;

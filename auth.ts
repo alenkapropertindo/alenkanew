@@ -1,11 +1,11 @@
-import NextAuth  from "next-auth";
+import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import authConfig from "@/auth.config";
 // import { getUserById } from "@/data/freelance";
 import { getAccountById } from "./data/account";
-import { db } from "./lib/db";
 import { AccountRole } from "@prisma/client";
+import db from "./lib/db";
 
 export const {
   handlers: { GET, POST },
@@ -39,7 +39,7 @@ export const {
 
       if (session.user) {
         session.user.name = token.name;
-        // session.user.email = token.email;
+        session.user.email = token.email;
       }
 
       return session;
@@ -52,9 +52,7 @@ export const {
 
       if (!existingUser) return token;
 
-      const existingAccount = await getAccountById(
-        existingUser.id
-      );
+      const existingAccount = await getAccountById(existingUser.id);
 
       token.isOAuth = !!existingAccount;
       token.name = existingUser.nama;
