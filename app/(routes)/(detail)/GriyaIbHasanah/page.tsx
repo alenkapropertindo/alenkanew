@@ -5,12 +5,11 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { TbMapSearch } from "react-icons/tb";
 
-import UnitTerlaris from "@/components/UnitTerlaris";
 
 import Container from "@/components/ui/container";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { TiMessageTyping } from "react-icons/ti";
+import UnitTerlaris from "@/app/components/UnitTerlaris";
 
 const ProductPage = () => {
   return (

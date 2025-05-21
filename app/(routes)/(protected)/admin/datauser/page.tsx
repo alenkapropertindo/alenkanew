@@ -1,18 +1,18 @@
 import { DataUserColumn } from "./components/columns";
 import { DataUserClient } from "./components/client";
-import { db } from "@/lib/db";
+import  db  from "@/lib/db";
 import { currentUser } from "@/lib/auth";
 
 const DataUserPage = async () => {
   const user = await currentUser();
-  const datausersadmin = await db.dataUser.findMany({
+  const datausersadmin = await db.customer.findMany({
     orderBy: {
       createdAt: "desc",
     },
   });
-  const datausers = await db.dataUser.findMany({
+  const datausers = await db.customer.findMany({
     where: {
-      affiliateId: user.id,
+      Id: user.id,
     },
     orderBy: {
       createdAt: "desc",
